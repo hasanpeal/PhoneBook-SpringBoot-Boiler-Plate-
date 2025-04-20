@@ -81,4 +81,3 @@ The application uses the following configuration (in `application.properties`):
 - Server port: 8081
 - Database: PostgreSQL
 - JPA/Hibernate settings for development
-# PhoneBook-SpringBoot-Boiler-Plate-
