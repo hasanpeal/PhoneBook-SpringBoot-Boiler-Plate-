@@ -4,8 +4,11 @@ package com.example.demo.phonebook;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,5 +95,31 @@ public class PhonebookController {
     @PostMapping
     public void addNewPhonebook(@RequestBody Phonebook phonebook) {
         phonebookService.addNewPhonebook(phonebook);
+    }
+
+    /**
+     * This is like a specific request type at the `reception desk:
+     * - @PutMapping means this handles requests for information
+     * - When someone visits "api/phonebook", this method is called
+     * - Like a receptionist's specific task of looking up phone numbers
+     * 
+     */
+    @PutMapping(path = "{phonebookId}")
+    public void updatePhonebook(@PathVariable("phonebookId") Long phonebookId, 
+                                @RequestBody(required = false) String phoneNumber,
+                                @RequestBody(required = false) String name) {
+        phonebookService.updatePhonebook(phonebookId, phoneNumber, name);
+    }
+    
+    /**
+     * This is like a specific request type at the `reception desk:
+     * - @DeleteMapping means this handles requests for information
+     * - When someone visits "api/phonebook", this method is called
+     * - Like a receptionist's specific task of looking up phone numbers
+     * 
+     */
+    @DeleteMapping(path = "{phonebookId}")
+    public void deletePhonebook(@PathVariable("phonebookId") Long phonebookId) {
+        phonebookService.deletePhonebook(phonebookId);
     }
 }

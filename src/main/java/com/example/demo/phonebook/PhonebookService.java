@@ -1,8 +1,13 @@
 // This is Service Layer
 package com.example.demo.phonebook;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 
 /**
  * Think of this as the phonebook's manager:
@@ -43,7 +48,38 @@ public class PhonebookService {
     }
 
     public void addNewPhonebook(Phonebook phonebook) {
+        Optional<Phonebook> phonebookOptional = 
+            phonebookRepository.findPhonebookByPhoneNumber(phonebook.getPhoneNumber());
+        if (phonebookOptional.isPresent()) {
+            throw new IllegalStateException("phone number taken");
+        }
         System.out.println("Saving new phonebook: \n" + phonebook + "\n");
         phonebookRepository.save(phonebook);
+    }
+
+    public void deletePhonebook(Long phonebookId) {
+        boolean exists = phonebookRepository.existsById(phonebookId);
+        if (!exists) {
+            throw new IllegalStateException("phonebook with id " + phonebookId + " does not exist");
+        }
+        phonebookRepository.deleteById(phonebookId);
+    }
+
+    /**
+     * This is like a librarian updating a contact card in the filing cabinet:
+     * - @Transactional ensures all changes are saved to the database
+     * - Handles validation and persistence of changes
+     * - Works between the receptionist (Controller) and the storage room (Database)
+     */
+    @Transactional
+    public void updatePhonebook(Long phonebookId, String phoneNumber, String name) {
+        Phonebook phonebook = phonebookRepository.findById(phonebookId)
+            .orElseThrow(() -> new IllegalStateException("phonebook with id " + phonebookId + " does not exist"));
+        if (phoneNumber != null && phoneNumber.length() > 0 && !Objects.equals(phonebook.getPhoneNumber(), phoneNumber)) {
+            phonebook.setPhoneNumber(phoneNumber);
+        }
+        if (name != null && name.length() > 0 && !Objects.equals(phonebook.getName(), name)) {
+            phonebook.setName(name);
+        }
     }
 }

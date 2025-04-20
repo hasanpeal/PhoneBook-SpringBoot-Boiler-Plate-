@@ -57,6 +57,18 @@ The project follows a layered architecture pattern:
    ./mvnw spring-boot:run
    ```
 
+### Building and Running the JAR
+
+1. In your IDE, click on "Maven" in the sidebar
+2. Run the following Maven commands in sequence:
+   - `clean` - Deletes the existing target folder
+   - `install` - Creates a new target folder with the JAR file
+3. To run the JAR file:
+   ```bash
+   cd target
+   java -jar demo-0.0.1-SNAPSHOT.jar
+   ```
+
 ## API Endpoints
 
 - `GET /api/phonebook` - Get all phonebook entries
