@@ -75,10 +75,10 @@ public class PhonebookService {
     public void updatePhonebook(Long phonebookId, String phoneNumber, String name) {
         Phonebook phonebook = phonebookRepository.findById(phonebookId)
             .orElseThrow(() -> new IllegalStateException("phonebook with id " + phonebookId + " does not exist"));
-        if (phoneNumber != null && phoneNumber.length() > 0 && !Objects.equals(phonebook.getPhoneNumber(), phoneNumber)) {
+        if (phoneNumber != null && !phoneNumber.isEmpty() && !Objects.equals(phonebook.getPhoneNumber(), phoneNumber)) {
             phonebook.setPhoneNumber(phoneNumber);
         }
-        if (name != null && name.length() > 0 && !Objects.equals(phonebook.getName(), name)) {
+        if (name != null && !name.isEmpty() && !Objects.equals(phonebook.getName(), name)) {
             phonebook.setName(name);
         }
     }
